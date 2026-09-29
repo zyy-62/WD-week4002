@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Practical Exercises</title>
+</head>
+<body>
+<h2>1. Popup function with buttons</h2>
+<button onclick="popup('Hello from button 1')">Button 1</button>
+<button onclick="popup('Hello from button 2')">Button 2</button>
+
+<script>
+// popup function
+function popup(x){
+    alert(x);
+}
+</script>
+
+<hr>
+<h2>2. Text box get value, count popup times, detect 'fred'</h2>
+<input type="text" id="reply" placeholder="type something">
+<button onclick="checkReply()">Submit</button>
+<p>Popup counter: <span id="counterDisplay">0</span></p>
+<script>
+let popupCount = 0;
+function checkReply(){
+    let v = document.getElementById("reply").value;
+    if(v.includes("fred")){
+        popupCount++;
+        // conditional expression convert fred → FRED
+        let processed = v.includes("fred") ? v.replace("fred","FRED") : v;
+        alert(`Count:${popupCount}, content: ${processed}`);
+        document.getElementById("counterDisplay").innerText = popupCount;
+    }
+}
+</script>
+
+<hr>
+<h2>3. For‑loop output numbers 1‑10 & custom upper limit</h2>
+<p id="output"></p>
+<input type="text" id="limitInput" placeholder="enter upper limit number">
+<button onclick="printToLimit()">Print numbers 1 ~ limit</button>
+<script>
+// print 1‑10
+let outEl = document.getElementById("output");
+outEl.innerText = "Numbers 1‑10: ";
+for(let i=1;i<=10;i++){
+    outEl.innerText += i + " ";
+}
+
+function printToLimit(){
+    let s = document.getElementById("limitInput").value;
+    let limit = parseInt(s);
+    if(isNaN(limit)){
+        alert("Not a valid number: " + s);
+        return;
+    }
+    let res = "";
+    for(let i=1;i<=limit;i++){
+        res += i + " ";
+    }
+    alert(res);
+}
+</script>
+
+<hr>
+<h2>4. Array: Add / Show / Clear / Delete‑Last</h2>
+<input type="text" id="arrInput">
+<button onclick="addItem()">Add</button>
+<button onclick="showItems()">Show</button>
+<button onclick="clearAll()">Clear</button>
+<button onclick="deleteLast()">Delete‑Last</button>
+<h3 id="arrayOutput"></h3>
+<script>
+let myArray = [];
+function addItem(){
+    let val = document.getElementById("arrInput").value;
+    myArray.push(val);
+}
+function showItems(){
+    document.getElementById("arrayOutput").innerText = myArray.join(" | ");
+}
+function clearAll(){
+    myArray = [];
+    showItems();
+}
+function deleteLast(){
+    myArray.pop();
+    showItems();
+}
+</script>
+
+<hr>
+<h2>5. Change body font</h2>
+<h4>Change Body Font</h4>
+<input type="button" value='Body Font is Arial ' onClick="setFont('Arial' )"> <br>
+<input type="button" value='Body Font is Georgia' onClick="setFont('Georgia')"> <br>
+<input type="button" value='Body Font is Times ' onClick="setFont('Times')"> <br>
+<input type="button" value='Revert Body Font ' onClick="revertFont()">
+<input type="button" value='Show Changes ' onClick="showChanges()" >
+<p><b>Changes</b></p>
+<p id = 'changeList' > None yet </p>
+
+<script>
+let originalFont=null;
+let fontChanges = [];
+
+function setFont(whichFont){
+    if (originalFont == null) {
+        originalFont = document.body.style.fontFamily;
+    }
+    document.body.style.fontFamily = whichFont;
+    fontChanges.push(whichFont);
+}
+function revertFont(){
+    if(originalFont!==null){
+        document.body.style.fontFamily = originalFont;
+    }
+}
+function showChanges(){
+    if (fontChanges.length === 0 ){
+        alert("No changes");
+    } else {
+        let s = "";
+        for (let i=0; i<fontChanges.length; i++) {
+            s = s + fontChanges[i] + '<br>';
+        }
+        document.getElementById('changeList').innerHTML = s;
+    }
+}
+</script>
+
+</body>
+</html>

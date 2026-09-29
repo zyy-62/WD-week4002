@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercise4 Guess Number Game</title>
+</head>
+<body>
+<h1>Number Guessing Game (1-100, max 10 turns)</h1>
+<div id="gameArea"></div>
+<script src="randominteger.js"></script>
+<script>
+let secretNumber;
+let remainingTurns;
+let previousGuesses = [];
+
+function startGame(){
+    secretNumber = randomInt();
+    remainingTurns = 10;
+    previousGuesses = [];
+    renderGame();
+}
+
+function renderGame(){
+    let area = document.getElementById("gameArea");
+    let html = "";
+    html += `<p>Remaining turns: ${remainingTurns}</p>`;
+    html += `<p>Previous guesses: ${previousGuesses.join(", ") || "none"}</p>`;
+    html += `<input type="number" id="guessInput" min="1" max="100" placeholder="Enter your guess">`;
+    html += `<button onclick="makeGuess()">Submit Guess</button>`;
+    html += `<div id="message"></div>`;
+    area.innerHTML = html;
+}
+
+function makeGuess(){
+    let inputEl = document.getElementById("guessInput");
+    let guess = parseInt(inputEl.value);
+    let msgEl = document.getElementById("message");
+
+    if(isNaN(guess) || guess <1 || guess>100){
+        msgEl.innerText = "Please enter valid number between 1‑100";
+        return;
+    }
+
+    previousGuesses.push(guess);
+    remainingTurns -=1;
+
+    if(guess === secretNumber){
+        msgEl.innerText = `Congratulations! Correct number is ${secretNumber}. You win!`;
+        msgEl.innerText += "\n";
+        msgEl.innerHTML += `<br><button onclick="startGame()">Play Again</button>`;
+        return;
+    } else if(guess < secretNumber){
+        msgEl.innerText = "Wrong! Your guess is too LOW.";
+    } else {
+        msgEl.innerText = "Wrong! Your guess is too HIGH.";
+    }
+
+    if(remainingTurns <=0){
+        msgEl.innerHTML += `<p>Game over! Secret number was ${secretNumber}</p>`;
+        msgEl.innerHTML += `<button onclick="startGame()">Play Again</button>`;
+        return;
+    }
+    renderGame();
+}
+
+// start on page load
+startGame();
+</script>
+</body>
+</html>
